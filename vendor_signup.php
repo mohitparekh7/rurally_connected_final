@@ -49,8 +49,10 @@ if (isset($_POST['submit_register_benef'])) {
 </head>
 <style type="text/css">
 	body {
-		background-image: url('images/bg11.jpg');
+		background-image: url('images/bg.jpg');
 		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
 	}
 
 	.navbar {

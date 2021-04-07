@@ -25,7 +25,7 @@ include("connection.php");
 
                                     <p class="card-text"><b>Key Skills: </b><?php echo $row['trainer_skills'] ?></p>
 
-                                    <centre><button class="btn shop-item-button" type="submit" value="<?php echo $row["trainer_id"] ?>" name="query">Contact Now</button></centre>
+                                    <centre><button class="btn shop-item-button" type="submit" value="<?php echo $row["trainer_id"] ?>" name="contact">Contact Now</button></centre>
                                 </div>
                             </div>
                         </div>

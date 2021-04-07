@@ -1,3 +1,4 @@
+<?php include("connection.php");?>
 <!DOCTYPE html>
 <html>
 
@@ -107,31 +108,36 @@
     <?php
     include('header.php');
     ?>
+    <div class="">
+        <div class="">
 
-    <div>
-        <?php
-        include("trainers_all.php");
-        ?>
-    </div>
+            <div class="">
+                <form method=POST>
+                    <?php
+                    include("trainers_all.php");
+                    ?>
+                </form>
+            </div>
 
+            <?php
+            if (isset($_POST['contact'])) {
+                session_start();
+                $tid = $_POST["contact"];
+                echo $tid;
+                $_SESSION['tid'] = $tid;
+                echo mysqli_error($con);
+                ?>
+                <script>
+                    document.location = 'query.php';
+                </script>
+                <?php
+            }
 
-    <?php
-    if (isset($_POST['query'])) {
-        session_start();
-        $tid = $_POST["query"];
-        echo $tid;
-        $_SESSION['tid'] = $id;
-    ?>
-        <script>
-            document.location = 'query.php';
-        </script>
-    <?php
-    }
-
-    ?>
-    <?php
-    include('footer.php');
-    ?>
+            ?>
+            <?php
+            include('footer.php');
+            ?>
+        </div>
 </body>
 
 </html>

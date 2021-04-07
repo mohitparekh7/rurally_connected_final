@@ -50,9 +50,11 @@ include("header.php");
 </head>
 <style type="text/css">
     body {
-        background-image: url('images/bg11.jpg');
-        background-position: right;
-    }
+		background-image: url('images/bg.jpg');
+		background-position: center;
+		background-repeat: no-repeat;
+		background-size: cover;
+	}
 
     .navbar {
         background-color: black;
