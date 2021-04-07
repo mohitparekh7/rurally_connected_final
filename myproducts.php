@@ -4,19 +4,19 @@ include("connection.php");
 extract($_REQUEST);
 if (isset($_SESSION['id'])) {
     $id = $_SESSION['id'];
-    $vq = mysqli_query($con, "select * from vendor where vendor_email='$id'");
+    $vq = mysqli_query($con, "select * from beneficiaries_details where benef_emailid='$id'");
     $vr = mysqli_fetch_array($vq);
-    $vrid = $vr['vendor_id'];
+    $vrid = $vr['benef_id'];
 }
 
 if (!isset($_SESSION['id'])) {
-    header("location:vendor_login.php?msg=Please Login To continue");
+    header("location:vendor_login1.php?msg=Please Login To continue");
 } else {
-    $query = mysqli_query($con, "select * from vendor   where vendor_email='$id'");
+    $query = mysqli_query($con, "select * from beneficiaries_details  where benef_emailid='$id'");
     if (mysqli_num_rows($query)) {
 
         $row = mysqli_fetch_array($query);
-        $v_id = $row['vendor_id'];
+        $v_id = $row['benef_id'];
     } else {
         header("location:index.php");
     }
@@ -66,7 +66,7 @@ if (isset($upd_logo)) {
             // unlink("image/restaurant/$id/$old_logo");
             // move_uploaded_file($_FILES['logo_pic']['tmp_name'], "image/restaurant/$id/" . $_FILES['logo_pic']['name']);
 
-            header("location:update_food.php");
+            // header("location:update_food.php");
         }
     } else {
         header("location:vendor_login.php?msg=Please Login To continue");

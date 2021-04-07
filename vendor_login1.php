@@ -6,7 +6,7 @@ if (isset($_SESSION['id'])) {
     header("location:myproducts.php");
 }
 if (isset($login)) {
-    $sql = mysqli_query($con, "select * from vendor where vendor_email='$username' && vendor_password='$pswd' ");
+    $sql = mysqli_query($con, "select * from beneficiaries_details where benef_emailid='$username' && benef_password='$pswd' ");
     if (mysqli_num_rows($sql)) {
         $_SESSION['id'] = $username;
         header('location:myproducts.php');
