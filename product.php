@@ -123,11 +123,11 @@ include('connection.php');
 
                     <ul class="nav flex-column menu">
                         <li class="nav-item">
-                            <a class="nav-link active-link" href="?page=mens">cat1</a>
+                            <a class="nav-link active-link" href="?page=showproduct">All Products</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="?page=womens">cat2</a>
+                            <a class="nav-link" href="?page=recomended_products">Recomended For You</a>
                         </li>
 
                     </ul>
