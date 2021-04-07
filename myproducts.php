@@ -27,18 +27,18 @@ if (isset($add)) {
     if (isset($_SESSION['id'])) {
         // $img_name = $_FILES['p_img']['p_name'];
         if (!empty($chk)) {
-            $gender = implode(",", $chk);
-            if (mysqli_query($con, "insert into product(vendor_id,p_name,p_price,p_category,p_gender) values
+            $category = $chk;
+            if (mysqli_query($con, "insert into product(vendor_id,p_name,p_price,p_category) values
 	
-	('$v_id','$product_name','$cost','$category','$gender')")) {
+	('$v_id','$product_name','$cost','$category')")) {
             } else {
                 echo mysqli_error($con);
             }
         } else {
-            $paymessage = "please select a gender";
+            $categorymessage = "please select a category";
         }
     } else {
-        header("location:vendor_login.php");
+        header("location:vendor_login1.php");
     }
 }
 
@@ -51,7 +51,7 @@ if (isset($upd_account)) {
     //echo $fn;
     //echo $emm;
     //echo $add;
-    if (mysqlI_query($con, "update vendor set vendor_name='$fn',vendor_email='$emm',vendor_address='$add',vendor_contact='$mob',vendor_password='$pwsd' where vendor_email='$id'")) {
+    if (mysqlI_query($con, "update beneficiaries_details set benef_name='$fn',benef_emailid='$emm',benef_address='$add',benef_mobilenumber='$mob',benef_password='$pwsd' where benef_id='$vrid'")) {
         header("location:infoUpdate.php");
     }
 }
@@ -124,9 +124,9 @@ if (isset($upd_logo)) {
             <li class="nav-item">
                 <a class="nav-link" id="status-tab" data-toggle="tab" href="#status" role="tab" aria-controls="status" aria-selected="false">Order Status</a>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
                 <a class="nav-link" id="queries-tab" data-toggle="tab" href="#queries" role="tab" aria-controls="queries" aria-selected="false">Customer Queries</a>
-            </li>
+            </li> -->
 
         </ul>
         <br><br>
@@ -143,11 +143,10 @@ if (isset($upd_logo)) {
                         <th>Product name</th>
                         <th>Product Price</th>
                         <th>Product Category </th>
-                        <th>Gender </th>
                         <th>Delete Item </th>
                         <th>Update item Details </th>
                         <?php
-                        if ($query = mysqli_query($con, "select vendor.vendor_id,vendor.vendor_email,product.p_id,product.p_name,product.p_price,product.p_gender,product.p_category,product.p_img,vendor.vendor_name from vendor inner join product on vendor.vendor_id=product.vendor_id where vendor.vendor_email='$id'")) {
+                        if ($query = mysqli_query($con, "select beneficiaries_details.benef_id,beneficiaries_details.benef_emailid,product.p_id,product.p_name,product.p_price,product.p_category,product.p_img,beneficiaries_details.benef_name from beneficiaries_details inner join product on beneficiaries_details.benef_id=product.benef_id where beneficiaries_details.benef_emailid='$id'")) {
                             if (mysqli_num_rows($query)) {
                                 while ($row = mysqli_fetch_array($query)) {
 
@@ -158,7 +157,6 @@ if (isset($upd_logo)) {
                                         <td style="width:150px;"><?php echo $row['p_name'] . "<br>"; ?></td>
                                         <td align="center" style="width:150px;"><?php echo $row['p_price'] . "<br>"; ?></td>
                                         <td align="center" style="width:150px;"><?php echo $row['p_category'] . "<br>"; ?></td>
-                                        <td align="center" style="width:150px;"><?php echo $row['p_gender'] . "<br>"; ?></td>
                                         <td align="center" style="width:150px;">
 
                                             <a href="vendor_delete_product.php?p_id=<?php echo $row['p_id']; ?>"><button type="button" class="btn btn-danger">Delete </button></a>
@@ -214,20 +212,13 @@ if (isset($upd_logo)) {
 
 
                     <div class="form-group">
-                        <!--category-->
-                        <label for="category">Categories :</label>
-                        <input type="text" class="form-control" id="category" value="<?php if (isset($category)) {
-                                                                                            echo $category;
-                                                                                        } ?>" placeholder="Enter category" name="category" required>
-                    </div>
-
-                    <div class="form-group">
                         <!--payment_mode-->
-                        <input type="checkbox" name="chk[]" value="Men" />Men
-                        <input type="checkbox" name="chk[]" value="Women" />Women
+                        <input type="radio" name="chk[]" value="farmproduce" />Farm Produce
+                        <input type="radio" name="chk[]" value="farmwaste" />Farm Waste
+                        <input type="radio" name="chk[]" value="handicraft" />HandiCraft
                         <br>
-                        <span style="color:red;"><?php if (isset($gendermessage)) {
-                                                        echo $gendermessage;
+                        <span style="color:red;"><?php if (isset($categorymessage)) {
+                                                        echo $categorymessage;
                                                     } ?></span>
                     </div>
 
@@ -250,14 +241,13 @@ if (isset($upd_logo)) {
             <div class="tab-pane fade" id="accountsettings" role="tabpanel" aria-labelledby="accountsettings-tab">
                 <form method="post" enctype="multipart/form-data">
                     <?php
-                    $upd_info = mysqli_query($con, "select * from vendor where vendor_email='$id'");
+                    $upd_info = mysqli_query($con, "select * from beneficiaries_details where benef_emailid='$id'");
                     $upd_info_row = mysqlI_fetch_array($upd_info);
-                    $nm = $upd_info_row['vendor_name'];
-                    $emm = $upd_info_row['vendor_email'];
-                    $log = $upd_info_row['vendor_img'];
-                    $ad = $upd_info_row['vendor_address'];
-                    $mb = $upd_info_row['vendor_contact'];
-                    $psd = $upd_info_row['vendor_password'];
+                    $nm = $upd_info_row['benef_name'];
+                    $emm = $upd_info_row['benef_emailid'];
+                    $ad = $upd_info_row['benef_address'];
+                    $mb = $upd_info_row['benef_mobilenumber'];
+                    $psd = $upd_info_row['benef_password'];
 
                     ?>
 
@@ -313,17 +303,17 @@ if (isset($upd_logo)) {
                         <th>Update Status</th>
 
                         <?php
-                        $orderquery = mysqli_query($con, "select * from orders  join product on orders.p_id=product.p_id where vendor_id='$vrid'");
+                        $orderquery = mysqli_query($con, "select * from orders join product on orders.p_id=product.p_id where benef_id='$vrid'");
                         if (mysqli_num_rows($orderquery) > 0) {
                             while ($orderrow = mysqli_fetch_array($orderquery)) {
-                                $userid = $orderrow['u_id'];
-                                $userquery = mysqli_query($con, "SELECT * FROM user_details  WHERE  user_id ='$userid'");
+                                $userid = $orderrow['co_id'];
+                                $userquery = mysqli_query($con, "SELECT * FROM companies_details  WHERE  company_id ='$userid'");
                                 $userrow = mysqli_fetch_array($userquery);
                                 $stat = $orderrow['orderstatus'];
                         ?>
                                 <tr>
                                     <td><?php echo $orderrow['order_id']; ?></td>
-                                    <td><?php echo $userrow['user_emailid']; ?></td>
+                                    <td><?php echo $userrow['company_emailid']; ?></td>
                                     <td><?php echo $orderrow['p_id']; ?></td>
                                     <?php
                                     if ($stat == "cancelled" || $stat == "Out Of Stock") {
@@ -351,7 +341,7 @@ if (isset($upd_logo)) {
             <!-- Tab Order Status Ends  -->
 
             <!-- Tab Queries Start  -->
-            <div class="tab-pane fade " id="queries" role="tabpanel" aria-labelledby="queries-tab">
+            <!-- <div class="tab-pane fade " id="queries" role="tabpanel" aria-labelledby="queries-tab">
                 <table class="table">
                     <tbody>
                         <th>Product Id</th>
@@ -395,7 +385,7 @@ if (isset($upd_logo)) {
                             ?>
                     </tbody>
                 </table>
-            </div>
+            </div> -->
             <!-- Tab Queries End  -->
 
         </div>

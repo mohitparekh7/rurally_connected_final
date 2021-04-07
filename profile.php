@@ -2,7 +2,7 @@
 include 'connection.php';
 session_start();
 $id = $_SESSION['id'];
-$query = mysqli_query($con, "SELECT * FROM user_details WHERE user_id = '$id'") or die(mysqli_error($con));
+$query = mysqli_query($con, "SELECT * FROM companies_details WHERE company_id = '$id'") or die(mysqli_error($con));
 $row = mysqli_fetch_array($query)
 ?>
 
@@ -84,28 +84,28 @@ $row = mysqli_fetch_array($query)
                     <tr>
                         <div class="form-group">
                             <td><label>Full Name</label></td>
-                            <td><input type="text" name="fname" style="width: 20em" placeholder="Enter your Fullname" value="<?php echo $row['user_name']; ?>" required /></td>
+                            <td><input type="text" name="fname" style="width: 20em" placeholder="Enter your Fullname" value="<?php echo $row['company_name']; ?>" required /></td>
                         </div>
                     </tr>
 
                     <tr>
                         <div class="form-group">
                             <td><label>Address</label></td>
-                            <td><input type="text" name="address" style="width: 20em" placeholder="Enter your Address" value="<?php echo $row['user_address']; ?>" required /></td>
+                            <td><input type="text" name="address" style="width: 20em" placeholder="Enter your Address" value="<?php echo $row['company_address']; ?>" required /></td>
                         </div>
                     </tr>
 
                     <tr>
                         <div class="form-group">
                             <td><label>Email</label></td>
-                            <td><input type="text" name="email" style="width: 20em" placeholder="Enter your Email" value="<?php echo $row['user_emailid']; ?>" required /></td>
+                            <td><input type="text" name="email" style="width: 20em" placeholder="Enter your Email" value="<?php echo $row['company_emailid']; ?>" required /></td>
                         </div>
                     </tr>
 
                     <tr>
                         <div class="form-group">
                             <td><label>Mobile Number</label></td>
-                            <td><input type="text" name="number" style="width: 20em" placeholder="Enter your Address" value="<?php echo $row['user_mobilenumber']; ?>" required /></td>
+                            <td><input type="text" name="number" style="width: 20em" placeholder="Enter your Address" value="<?php echo $row['company_number']; ?>" required /></td>
                         </div>
                     </tr>
                 </table>

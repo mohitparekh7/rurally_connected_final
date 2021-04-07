@@ -9,13 +9,13 @@ if (isset($_POST['plus'])) {
     // header('location: index.php');
     $pid = $_POST['plus'];
     // echo $pid;
-    $res = mysqli_query($con, "SELECT * FROM cart WHERE pid = '$pid'");
+    $res = mysqli_query($con, "SELECT * FROM cart WHERE p_id = '$pid'");
     $row = mysqli_fetch_array($res);
 
     $quantity = $row[5];
     $quantity = $quantity + 1;
 
-    $query = "UPDATE cart SET qty = '$quantity' WHERE pid = '$pid'";
+    $query = "UPDATE cart SET qty = '$quantity' WHERE p_id = '$pid'";
     if (mysqli_query($con, $query)) {
         # code...
 ?>
@@ -33,13 +33,13 @@ if (isset($_POST['minus'])) {
     // header('location: index.php');
     $pid = $_POST['minus'];
     // echo $pid;
-    $res = mysqli_query($con, "SELECT * FROM cart WHERE pid = '$pid'");
+    $res = mysqli_query($con, "SELECT * FROM cart WHERE p_id = '$pid'");
     $row = mysqli_fetch_array($res);
 
     $quantity = $row[5];
     $quantity = $quantity - 1;
 
-    $query = "UPDATE cart SET qty = '$quantity' WHERE pid = '$pid'";
+    $query = "UPDATE cart SET qty = '$quantity' WHERE p_id = '$pid'";
     if (mysqli_query($con, $query)) {
         # code...
     ?>
@@ -56,22 +56,22 @@ if (isset($_POST['minus'])) {
 if (isset($_POST['checkout'])) {
     # code...
     $u_id = $id;
-    $query = mysqli_query($con, "SELECT * FROM cart WHERE u_id = '$u_id' and qty > 0");
+    $query = mysqli_query($con, "SELECT * FROM cart WHERE co_id = '$u_id' and qty > 0");
     if (!empty($query)) {
         # code...
         while ($row = mysqli_fetch_array($query)) {
-            $pid = $row['pid'];
+            $pid = $row['p_id'];
             $qty = $row['qty'];
-            $pname = $row['pname'];
+            $pname = $row['p_name'];
             $product_price = $row['qty'] * $row['price'];
-            $query1 = "INSERT INTO orders ( u_id,p_id,order_pname,order_price,order_qty,orderstatus) VALUES ('$u_id','$pid','$pname','$product_price','$qty','In Process')";
+            $query1 = "INSERT INTO orders ( co_id,p_id,order_pname,order_price,order_qty,orderstatus) VALUES ('$u_id','$pid','$pname','$product_price','$qty','In Process')";
             if (mysqli_query($con, $query1)) {
         ?>
                 <script type="text/javascript">
                     alert("Success!");
                 </script>
                 <?php
-                $query2 = "DELETE FROM cart WHERE u_id = '$u_id'";
+                $query2 = "DELETE FROM cart WHERE co_id = '$u_id'";
                 if (mysqli_query($con, $query2)) {
                 ?>
                     <script type="text/javascript">
@@ -188,15 +188,15 @@ include("header.php");
         <div class="row">
 
             <?php
-            $product = mysqli_query($con, "SELECT * FROM cart WHERE u_id='$id' and qty>=1");
+            $product = mysqli_query($con, "SELECT * FROM cart WHERE co_id='$id' and qty>0");
             $total_price = 0;
             if (!empty($product)) {
                 while ($row = mysqli_fetch_array($product)) {
-                    $productid = $row['pid'];
+                    $productid = $row['p_id'];
                     $productImgquery =  mysqli_query($con, "SELECT * FROM product WHERE p_id='$productid'");
                     $row1 = mysqli_fetch_array($productImgquery);
                     $productImg = $row1['p_img'];
-                    $product_price = $row['qty'] * $row['price'];
+                    $product_price = $row['qty'] * $row1['p_price'];
                     $total_price = $total_price + $product_price;
             ?>
                     <form method="post">
@@ -206,12 +206,12 @@ include("header.php");
        echo '<img class="card-img-top shop-item-image" src="data:image/jpeg;base64,'.base64_encode( $row1['p_img'] ).'"/>';
        ?>
                                 <div class="card-body">
-                                    <h5 class="card-title shop-item-title"><?php echo $row['pname'] ?>
+                                    <h5 class="card-title shop-item-title"><?php echo $row['p_name'] ?>
                                     </h5>
                                     <div class="shop-item-details">
                                         <p class="shop-item-price">Quantity: <?php echo $row['qty'] ?>
-                                            <button type="submit" name="minus" class="btn1" value="<?php echo $row['pid'] ?>">-</button>
-                                            <button type="submit" name="plus" class="btn1" value="<?php echo $row['pid'] ?>">+</button>
+                                            <button type="submit" name="minus" class="btn1" value="<?php echo $row['p_id'] ?>">-</button>
+                                            <button type="submit" name="plus" class="btn1" value="<?php echo $row['p_id'] ?>">+</button>
                                         </p>
                                         <p class="shop-item-price">Price: <?php echo "Rs " . $product_price ?></p>
                                     </div>

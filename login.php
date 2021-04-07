@@ -1,28 +1,36 @@
 <?php
+session_start();
 include "connection.php";
-if(isset($_POST['submit_login_company'])){
+extract($_REQUEST);
+
+if (isset($_POST['submit_login_company'])) {
 	// echo "in if";
 	$company_emailid = $_POST['company_emailid'];
 	$company_password = $_POST['company_password'];
 	$query = mysqli_query($con, "SELECT * FROM companies_details WHERE company_emailid = '$company_emailid' AND company_password = '$company_password'") or die(mysqli_error($con));;
 	$num_rows = mysqli_num_rows($query);
 	$row = mysqli_fetch_array($query);
-	if($num_rows > 0){
+	if ($num_rows > 0) {
+		$_SESSION['emailid'] = $company_emailid;
+		// echo $row['company_id'];
 		$_SESSION["id"] = $row['company_id'];
 		$_SESSION["success"] = 'You are now logged in';
 		echo $row['company_id'];
-		?>
+?>
 		<script>
 			alert('Successfully logged in');
 			document.location = 'index.php';
 		</script>
-		<?php
-	}else{
-		?>
+	<?php
+	} else {
+	?>
 		<script>
 			alert('Invalid Username or Password');
+			<?php
+			echo mysqli_error($con);
+			?>
 		</script>
-		<?php
+<?php
 	}
 }
 ?>

@@ -93,9 +93,9 @@ $id = $_SESSION['id'];
                 </tr>
                 <?php
 
-                $query = mysqli_query($con, "SELECT * FROM orders WHERE u_id = '$id'") or die(mysqli_error($con));
+                $query = mysqli_query($con, "SELECT * FROM orders WHERE co_id = '$id'") or die(mysqli_error($con));
                 $row = mysqli_fetch_array($query);
-                if (!empty($query)) {
+                if ($query) {
                     while ($row = mysqli_fetch_array($query)) {
                         $o_id = $row['order_id'];
                         $pname = $row['order_pname'];

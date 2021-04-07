@@ -1,5 +1,6 @@
 <?php
 session_start();
+extract($_REQUEST);
 $id = $_SESSION['id'];
 include('connection.php');
 ?>
@@ -122,11 +123,11 @@ include('connection.php');
 
                     <ul class="nav flex-column menu">
                         <li class="nav-item">
-                            <a class="nav-link active-link" href="?page=mens">Men</a>
+                            <a class="nav-link active-link" href="?page=mens">cat1</a>
                         </li>
 
                         <li class="nav-item">
-                            <a class="nav-link" href="?page=womens">Women</a>
+                            <a class="nav-link" href="?page=womens">cat2</a>
                         </li>
 
                     </ul>
@@ -144,7 +145,7 @@ include('connection.php');
                         if (file_exists($page))
                             include($page);
                     } else {
-                        include 'mens.php';
+                        include 'showproduct.php';
                     }
                     ?>
                 </form>
@@ -156,30 +157,41 @@ include('connection.php');
                 $pid = $_POST["add"];
                 $res = mysqli_query($con, "SELECT * FROM product WHERE p_id='$pid'");
                 $row = mysqli_fetch_array($res);
-                $price = $row[7]; //price
-                $pname = $row[3]; //pname
-                $img = $row[8];
-                $vendor = $row[2]; //vendor name
-                $pdesc = $row[6];
+                $price = $row['p_price']; //price
+                $pname = $row['p_name']; //pname
+                $vendor = $row['benef_id']; //vendor name
+                $pdesc = $row['p_desc'];
+                // echo $price;
 
-                $create = "CREATE TABLE IF NOT EXISTS cart (c_id INT PRIMARY KEY AUTO_INCREMENT NOT NULL,u_id INT, pid INT, pname VARCHAR(255) NOT NULL, price VARCHAR(255) NOT NULL, qty INT, p_img longblob NOT NULL)";
+                $create = "CREATE TABLE IF NOT EXISTS `cart` (
+                    `c_id` int(11) NOT NULL AUTO_INCREMENT,
+                    `p_id` int(11) NOT NULL,
+                    `co_id` int(11) NOT NULL,
+                    `p_name` varchar(255) NOT NULL,
+                    `price` int(11) NOT NULL,
+                    `qty` int(11) DEFAULT NULL,
+                    `p_desc` varchar(255) DEFAULT NULL,
+                    PRIMARY KEY (`c_id`)
+                  )";
                 if (mysqli_query($con, $create)) {
 
                     global $con;
-                    $result = mysqli_query($con, "SELECT * FROM cart WHERE pid = '$pid' ");
+                    $result = mysqli_query($con, "SELECT * FROM cart WHERE p_id = '$pid'");
                     $res1 = mysqli_fetch_row($result);
                     if ($res1) {
-
-                        $q = $res1[3];
+                        $q = $res1[5];
+                        echo $q;
                         $q = $q + 1;
-                        $query = " UPDATE cart SET qty= '$q' WHERE pid='$pid' ";
+                        echo $q;
+                        $query = " UPDATE cart SET qty= '$q' WHERE p_id='$pid' ";
                         if (mysqli_query($con, $query) == FALSE) {
                             echo '<script>alert("Failed to add item to cart. Try again.")</script>';
+                            echo mysqli_error($con);
                         }
                     } else {
 
                         //Implies adding first time to cart
-                        $query = "INSERT INTO cart (u_id,pid,pname,price,qty) VALUES('$id','$pid','$pname','$price','1')";
+                        $query = "INSERT INTO cart (p_id,co_id,p_name,price,qty) VALUES('$pid','$id','$pname','$price','1')";
                         if (mysqli_query($con, $query) == FALSE) {
                             echo $query;
                             echo mysqli_error($con);
@@ -189,17 +201,7 @@ include('connection.php');
                     echo "Sorry, couldn't connect to the database: " . mysqli_error($con);
                 }
             }
-            if (isset($_POST['query'])) {
-                session_start();
-                $pid = $_POST["query"];
-                echo $pid;
-                $_SESSION['pid'] = $pid;
-                ?>
-                <script>
-                    document.location = 'query.php';
-                </script>
-                <?php
-            }
+           
 
             ?>
 

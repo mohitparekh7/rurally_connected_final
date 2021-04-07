@@ -274,7 +274,6 @@ if (isset($_POST['submit_register_benef'])) {
 							<option value="farmwaste">Farmwaste</option>
 							<option value="handicraft">Handicraft</option>
 							<option value="farmproduce">Farm Produce</option>
-							<option value="pottery">Pottery</option>
 						</select>
 					</td>
 				</tr>
